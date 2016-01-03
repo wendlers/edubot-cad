@@ -1,7 +1,13 @@
 
 module show(parts) {
 	chasis_drilled();
-	drag_wheel();
+
+	if(edubot_tail == "drag") {
+		drag_wheel();
+	}
+	else if(edubot_tail == "wheel") {
+		tail_wheel();
+	}
 
 	if(parts==1) {
 		#battery_box();
@@ -25,9 +31,17 @@ module show(parts) {
 
 module print() {
 	chasis_drilled();
-	translate([-140, 0, 0])
-		rotate([180, 0, 0])
-			drag_wheel();
+
+	if(edubot_tail == "drag") {
+		translate([-140, 0, 0])
+			rotate([180, 0, 0])
+				drag_wheel();
+	}
+	else if(edubot_tail == "wheel") {
+		translate([-100, 95, 7.5])
+			rotate([90, 0, 0])
+				tail_wheel();
+	}
 }
 
 module drag_wheel() {
@@ -58,18 +72,34 @@ module gear() {
 module chasis_drilled() {
 	difference() {
 		chasis();
-		translate([70, 0, 0]) {
-			translate([0, 0, 6])
-				translate([0, 0, -20])
-					cylinder(r=2, h=40);
-			translate([0, 0, 6])
-				cylinder(r=4, h=5);
+
+		if(edubot_tail == "drag") {
+			// whole for drag wheel
+			translate([70, 0, 0]) {
+				translate([0, 0, 6])
+					translate([0, 0, -20])
+						cylinder(r=2, h=40);
+				translate([0, 0, 6])
+					cylinder(r=4, h=5);
+			}
+		}
+		else if(edubot_tail == "wheel") {
+			translate([71, 0, 5]) {
+				rotate([0,0,90]) 
+					cube([17, 35, 35], center=true);
+				translate([0, 40, 0])
+					rotate([90,0,0]) { 
+						cylinder(r=2, h=80);
+						translate([0, 0, -26])
+							cylinder(r=4, h=50);
+						translate([0, 0, 58])
+							cylinder(r=4, h=50);
+					}
+			}
 		}
 
 		// zip tie motor 1
-		translate([-68, -42.5, 10])
-			cube([5, 2, 40], center=true);
-		translate([-25, -42.5, 10])
+		translate([-17, -42.5, 10])
 			cube([5, 2, 40], center=true);
     
 		if(edubot_type == "nodemcu") {
@@ -106,9 +136,7 @@ module chasis_drilled() {
 				cylinder(r=3.5, h=10);
             
             // zip tie motor 2
-			translate([-68, -42.5, 10])
-                cube([5, 2, 40], center=true);
-			translate([-25, -42.5, 10])
+			translate([-17, -42.5, 10])
                 cube([5, 2, 40], center=true);
          }
 	}
@@ -146,7 +174,11 @@ module chasis() {
 			bumper_sensor();
 		}
     }
-    
+
+  	if(edubot_sensor == "universal") {
+		universal_sensor();
+	}
+
     // motor 1
     difference() {
         translate([-75, 44, 0])
@@ -227,6 +259,32 @@ module bumper_sensor() {
 	translate([-115, 0, 15])
 		cube([1.55, 8.9, 21.6], center=true);
 }
+
+module universal_sensor_solid() {
+	translate([-112, 0, 10]) {
+		cube([10, 4, 9], center=true);
+		translate([0, 2, 5])
+			rotate([90, 0, 0])  
+				cylinder(r=5, h=4);
+	}
+}
+
+module universal_sensor() {
+	difference() {
+		universal_sensor_solid();
+
+	translate([-112, 0, 10]) {
+		translate([0, 2, 5])
+			rotate([90, 0, 0]) { 
+				translate([0, 0, -11])
+					cylinder(r=2, h=30);
+				//translate([0, 0, 2])
+				//	cylinder(r=3.4, h=5);
+		}
+	}
+	}
+}
+
 
 module battery_box() {
 	if(edubot_batbox == "2x2") {
@@ -326,5 +384,35 @@ module motor(show_wheel) {
 	{
 		translate([0, -45, 0])
 			wheel();
+	}
+}
+
+module tail_wheel()
+{
+	translate([71, 0, 5]) {
+		difference() {
+			rotate([0,0,90]) 
+				intersection()
+				{
+					cube([15, 50, 50], center=true);
+					sphere(r=16);
+				}
+			translate([0, 40, 0])
+				rotate([90,0,0])  
+					cylinder(r=2.25, h=80);
+			translate([9, 40, 0])
+				rotate([90,0,0])  
+					cylinder(r=4, h=80);
+			translate([0, 40, 9])
+				rotate([90,0,0])  
+					cylinder(r=4, h=80);
+			mirror(1, 0, 0) 
+				translate([9, 40, 0])
+					rotate([90,0,0])  
+						cylinder(r=4, h=80);
+			translate([0, 40, -9])
+				rotate([90,0,0])  
+					cylinder(r=4, h=80);
+		}
 	}
 }
