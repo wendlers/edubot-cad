@@ -27,6 +27,9 @@ module show(parts) {
 			#bumper_sensor();
 		}
 	}
+
+	motor_cover1();
+	motor_cover2();
 }
 
 module print() {
@@ -43,6 +46,16 @@ module print() {
 				tail_wheel();
 	}
 }
+
+module print_cover() {
+	translate([50, 20, 28])
+		rotate([180, 0, 0])
+			motor_cover1();
+	translate([50, -20, 28])
+		rotate([180, 0, 0])
+			motor_cover2();
+}
+
 
 module drag_wheel() {
 	translate([70, 0, 0])
@@ -62,11 +75,11 @@ module drag_wheel() {
 module gear() {
 	translate([-70, -70, 26])
 		rotate([0, 90, 0])
-			motor(1);
+			motor(0);
 	translate([-70, 70, 26])
 		mirror([0, 1, 0])
 		rotate([0, 90, 0])
-			motor(1);
+			motor(0);
 }
 
 module chasis_drilled() {
@@ -98,15 +111,11 @@ module chasis_drilled() {
 			}
 		}
 
-		// zip tie motor 1
-		translate([-17, -42.5, 10])
-			cube([5, 2, 40], center=true);
-    
 		if(edubot_type == "nodemcu") {
 		   // zip tie nodemcu
-			translate([-49, -27, 10])
+			translate([-92, -27, 10])
 				cube([5, 2, 40], center=true);
-			translate([-49, +27, 10])
+			translate([-92, +27, 10])
 				cube([5, 2, 40], center=true);
 		}
         
@@ -128,16 +137,24 @@ module chasis_drilled() {
 		translate([-8, 50, 15])
             rotate([90, 0, 0])
               cylinder(r=3.5, h=10);
-        
+
+   		// drill hole motor 1
+		translate([-72.5, 58, -15])
+			cylinder(r=2, h=60);
+ 		translate([1, 58, -15])
+			cylinder(r=1.8, h=60);
+    
         mirror([0, 1 ,0]) {
             // cable hole motor 2
             translate([-8, 50, 15])
 				rotate([90, 0, 0])
 				cylinder(r=3.5, h=10);
-            
-            // zip tie motor 2
-			translate([-17, -42.5, 10])
-                cube([5, 2, 40], center=true);
+
+			// drill hole motor 2
+			translate([-72.5, 58, -15])
+				cylinder(r=2, h=60);
+ 			translate([1, 58, -15])
+				cylinder(r=1.8, h=60);
          }
 	}
 }
@@ -181,32 +198,68 @@ module chasis() {
 
     // motor 1
     difference() {
-        translate([-75, 44, 0])
-            cube([75, 21, 20]);
-    
+        translate([-72.5, 44, 0])
+            cube([72, 29, 15]);
+
         translate([-70, 70, 26])
             mirror([0, 1, 0])
                 rotate([0, 90, 0])
                     motor(0);
     }
-    
+
+	// .. lower part
+	difference() {
+	translate([-72.5, 58, 0])
+		cylinder(r=5, h=15);
+	   	translate([-70, 70, 26])
+            mirror([0, 1, 0])
+                rotate([0, 90, 0])
+                    motor(0);
+ 	}
+	difference() {
+		translate([0, 58, 0])
+			cylinder(r=5, h=15);
+       	translate([-70, 70, 26])
+            mirror([0, 1, 0])
+                rotate([0, 90, 0])
+                    motor(0);
+ 	}
+
     // motor 2
-    mirror([0,1,0])
-        difference() {
-				translate([-75, 44, 0])
-					cube([75, 21, 20]);
-			
+    mirror([0,1,0]) {
+		difference() {
+			translate([-72.5, 44, 0])
+				cube([72, 29, 15]);
+		   
 			translate([-70, 70, 26])
 				mirror([0, 1, 0])
 					rotate([0, 90, 0])
-						motor(0);      
+						motor(0);
 		}
-    
+		// .. lower part
+		difference() {
+			translate([-72.5, 58, 0])
+				cylinder(r=5, h=15);
+			translate([-70, 70, 26])
+					mirror([0, 1, 0])
+						rotate([0, 90, 0])
+							motor(0);
+			}
+		difference() {
+			translate([0, 58, 0])
+				cylinder(r=5, h=15);
+			translate([-70, 70, 26])
+				mirror([0, 1, 0])
+					rotate([0, 90, 0])
+						motor(0);
+		}
+	}
+
     // battery holder
     difference()  {
 		if(edubot_batbox == "2x2x2" || edubot_batbox == "2x2") {
 			translate([1, 0, 10/2])
-				cube([72, 90, 10], center=true);
+				cube([68, 90, 10], center=true);
 		}
 		else {
 			translate([0, 0, 10/2])
@@ -255,6 +308,57 @@ module chasis() {
 	}
 }
 
+module motor_cover1() {
+	// .. upper part
+    difference() {
+    	translate([-72.5, 44, 15])
+        	cube([72, 29, 13]);
+   
+        translate([-70, 70, 26])
+            mirror([0, 1, 0])
+                rotate([0, 90, 0])
+                    motor(0);
+		// drill hole
+		translate([-72.5, 58, -15])
+			cylinder(r=2, h=60);
+ 		translate([1, 58, -15])
+			cylinder(r=1.8, h=60);
+
+		// cable hole motor 
+		translate([-8, 50, 15])
+            rotate([90, 0, 0])
+              cylinder(r=3.5, h=10);
+     }
+
+    difference() {
+	  	translate([-72.5, 58, 15])
+			cylinder(r=5, h=13);
+ 
+        translate([-70, 70, 26])
+            mirror([0, 1, 0])
+                rotate([0, 90, 0])
+                    motor(0);
+		// drill hole
+		translate([-73.5, 58, -15])
+			cylinder(r=1.8, h=60);
+    }
+	difference() {
+		translate([0, 58, 15])
+			cylinder(r=5, h=13);
+       	translate([-70, 70, 26])
+            mirror([0, 1, 0])
+                rotate([0, 90, 0])
+                    motor(0);
+ 		translate([1, 58, -15])
+			cylinder(r=1.8, h=60);
+	}
+}
+
+module motor_cover2() {
+	mirror([0, 1, 0])
+		motor_cover1();
+}
+ 
 module bumper_sensor() {
 	translate([-115, 0, 15])
 		cube([1.55, 8.9, 21.6], center=true);
@@ -273,15 +377,13 @@ module universal_sensor() {
 	difference() {
 		universal_sensor_solid();
 
-	translate([-112, 0, 10]) {
-		translate([0, 2, 5])
-			rotate([90, 0, 0]) { 
-				translate([0, 0, -11])
-					cylinder(r=2, h=30);
-				//translate([0, 0, 2])
-				//	cylinder(r=3.4, h=5);
+		translate([-112, 0, 10]) {
+			translate([0, 2, 5])
+				rotate([90, 0, 0]) { 
+					translate([0, 0, -11])
+						cylinder(r=2, h=30);
+				}
 		}
-	}
 	}
 }
 
@@ -295,14 +397,14 @@ module battery_box() {
 	}
 	else if(edubot_batbox == "2x2x2") {
 		translate([0, -17, 31/2+2])
-			cube([61.5, 31, 31], center=true);
+			cube([57, 31, 31], center=true);
 		translate([0, -17, 31/2-8])
-			cube([61.5-8, 30-8, 31], center=true);
+			cube([57-8, 30-8, 31], center=true);
 
 		translate([0, 17, 31/2+2])
-			cube([61.5, 31, 31], center=true);
+			cube([57, 31, 31], center=true);
 		translate([0, 17, 31/2-8])
-			cube([61.5-8, 30-8, 31], center=true);
+			cube([57-8, 30-8, 31], center=true);
 	}
 	else {
 		translate([0, 0, 15.7/2+2])
@@ -369,7 +471,7 @@ module motor(show_wheel) {
 
 		translate([11.5, 0, 11])
 			rotate([90, 0, 0])
-				cylinder(h=8, r=3);
+				cylinder(h=8, r=8);
         
 		translate([11.5, 31, 11])
 			rotate([90, 0, 0])
