@@ -41,7 +41,7 @@ module print() {
 				drag_wheel();
 	}
 	else if(edubot_tail == "wheel") {
-		translate([-100, 95, 7.5])
+		translate([-40, 85, 7.5])
 			rotate([90, 0, 0])
 				tail_wheel();
 	}
@@ -56,6 +56,13 @@ module print_cover() {
 			motor_cover2();
 }
 
+module print_mb() {
+    motor_box1();
+    
+	translate([50, 20, 28])
+		rotate([180, 0, 0])
+			motor_cover1();
+}
 
 module drag_wheel() {
 	translate([70, 0, 0])
@@ -196,26 +203,8 @@ module chasis() {
 		universal_sensor();
 	}
 
-    // motor 1
-    difference() {
-        translate([-72.5, 44, 0])
-            cube([72, 29, 15]);
-
-        translate([-70, 70, 26])
-            mirror([0, 1, 0])
-                rotate([0, 90, 0])
-                    motor(0);
-    }
-
-	// .. lower part
-	difference() {
-	translate([-72.5, 58, 0])
-		cylinder(r=5, h=15);
-	   	translate([-70, 70, 26])
-            mirror([0, 1, 0])
-                rotate([0, 90, 0])
-                    motor(0);
- 	}
+    motor_box1();
+    
 	difference() {
 		translate([0, 58, 0])
 			cylinder(r=5, h=15);
@@ -225,35 +214,7 @@ module chasis() {
                     motor(0);
  	}
 
-    // motor 2
-    mirror([0,1,0]) {
-		difference() {
-			translate([-72.5, 44, 0])
-				cube([72, 29, 15]);
-		   
-			translate([-70, 70, 26])
-				mirror([0, 1, 0])
-					rotate([0, 90, 0])
-						motor(0);
-		}
-		// .. lower part
-		difference() {
-			translate([-72.5, 58, 0])
-				cylinder(r=5, h=15);
-			translate([-70, 70, 26])
-					mirror([0, 1, 0])
-						rotate([0, 90, 0])
-							motor(0);
-			}
-		difference() {
-			translate([0, 58, 0])
-				cylinder(r=5, h=15);
-			translate([-70, 70, 26])
-				mirror([0, 1, 0])
-					rotate([0, 90, 0])
-						motor(0);
-		}
-	}
+    motor_box2();
 
     // battery holder
     difference()  {
@@ -308,17 +269,76 @@ module chasis() {
 	}
 }
 
+module motor_box1() {
+    
+    // motor 1
+    difference() {
+        translate([-72.5, 44, 0])
+            cube([72, 29, 15]);
+
+        translate([-70, 70, 26])
+        {
+            mirror([0, 1, 0])
+                rotate([0, 90, 0]) {
+                    motor(0);
+                    translate([11.5, 0, 11])
+                        rotate([90, 0, 0])
+                            cylinder(h=8, r=10);
+                    translate([11.5, 0, 57])
+                        rotate([90, 0, 0])
+                            cylinder(h=8, r=10);
+                }
+             translate([10, 0, -21.5])
+                cube([46, 10, 20]);
+         }
+    }
+
+	// .. lower part
+	difference() {
+	translate([-72.5, 58, 0])
+		cylinder(r=5, h=15);
+	   	translate([-70, 70, 26])
+            mirror([0, 1, 0])
+                rotate([0, 90, 0])
+                    motor(0);
+ 	}
+	difference() {
+		translate([0, 58, 0])
+			cylinder(r=5, h=15);
+       	translate([-70, 70, 26])
+            mirror([0, 1, 0])
+                rotate([0, 90, 0])
+                    motor(0);
+ 	}
+}
+
+module motor_box2() {
+	mirror([0, 1, 0])
+		motor_box1();
+}
+
 module motor_cover1() {
 	// .. upper part
     difference() {
     	translate([-72.5, 44, 15])
         	cube([72, 29, 13]);
    
-        translate([-70, 70, 26])
+        translate([-70, 70, 26]) {
             mirror([0, 1, 0])
-                rotate([0, 90, 0])
+                rotate([0, 90, 0]) {
                     motor(0);
-		// drill hole
+                    translate([11.5, 0, 11])
+                        rotate([90, 0, 0])
+                            cylinder(h=8, r=10);
+                    translate([11.5, 0, 57])
+                        rotate([90, 0, 0])
+                            cylinder(h=8, r=10);
+                }
+             translate([10, 0, -21.5])
+                cube([46, 10, 20]);
+        }
+	
+        // drill hole
 		translate([-72.5, 58, -15])
 			cylinder(r=2, h=60);
  		translate([1, 58, -15])
@@ -386,7 +406,6 @@ module universal_sensor() {
 		}
 	}
 }
-
 
 module battery_box() {
 	if(edubot_batbox == "2x2") {
@@ -468,10 +487,12 @@ module motor(show_wheel) {
 		}
 		translate([11.5-6, 21, 37])
 			cube([12, 3, 30]);
+		translate([11.5-6, 0, 37])
+			cube([12, 3, 30]);
 
 		translate([11.5, 0, 11])
 			rotate([90, 0, 0])
-				cylinder(h=8, r=8);
+				cylinder(h=8, r=4);
         
 		translate([11.5, 31, 11])
 			rotate([90, 0, 0])
