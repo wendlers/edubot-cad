@@ -11,6 +11,11 @@ edubot_batbox="2x2x2";
 edubot_tail="wheel";
 //edubot_tail="drag";
 
-//show(1);
-print();
+// show(0);
+// print();
 // print_cover();
+print_mb();
+
+
+// motor_box1();
+// motor_cover1();
