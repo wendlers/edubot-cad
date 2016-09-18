@@ -16,10 +16,10 @@ module show(parts) {
 		if(edubot_type == "nodemcu") {
 			#nodemcu();
 		}
-		else if (edubot_type == "bboard" || edubot_type == "codebug") {
+		else if(edubot_type == "bboard" || edubot_type == "codebug") {
 			#bread_board();
 		}
-		else if (edubot_type == "codebug") {
+		else if(edubot_type == "codebug") {
 			// #codebug();
 		}
 
@@ -28,13 +28,16 @@ module show(parts) {
 		}
 	}
 
-	motor_cover1();
-	motor_cover2();
+	//translate([0, 1, 0])
+		motor_cover1();
+	//translate([0, -1, 0])
+		motor_cover2();
 }
 
 module print() {
 	chasis_drilled();
 
+	/*
 	if(edubot_tail == "drag") {
 		translate([-140, 0, 0])
 			rotate([180, 0, 0])
@@ -45,6 +48,7 @@ module print() {
 			rotate([90, 0, 0])
 				tail_wheel();
 	}
+	*/
 }
 
 module print_cover() {
@@ -201,7 +205,7 @@ module chasis() {
 		universal_sensor();
 	}
 
-	translate([0, 1, 0])
+	// translate([0, 1, 0])
    		motor_box1();
     
 	difference() {
@@ -213,7 +217,7 @@ module chasis() {
                     motor(0);
  	}
 
-	translate([0, -1, 0])
+	// translate([0, -1, 0])
    		motor_box2();
 
     // battery holder
@@ -421,10 +425,10 @@ module battery_box() {
 	}
 	else {
 		translate([0, 0, 15.7/2+2])
-			cube([58, 62.7, 15.7], center=true);
+			cube([58, 63, 15.7], center=true);
 		translate([0, 0, 15.7/2-8])
-			cube([58-10, 62.7-10, 10], center=true);
-		translate([-58+30, +62.7/2-30/2, 15.7/2+2])
+			cube([58-10, 63-10, 10], center=true);
+		translate([-58+30, +63/2-30/2, 15.7/2+2])
 		   cube([15, 30, 15.7], center=true);
 	}
 }

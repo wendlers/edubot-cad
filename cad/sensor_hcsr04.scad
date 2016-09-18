@@ -42,24 +42,25 @@ module hcsr04() {
 module frame() {
     difference () {
         union () {
-          cube ([55, 31, 3]);
-          translate ([23.5, 26, 0]) 
+		  translate([1, 0, 0])
+            cube ([53, 31, 3]);
+          translate ([21.5, 26, 0]) 
             cube ([4, 10, 3]);
         }
         union () {
-            translate ([14, 15, 0]) 
-               cylinder  (h=3, r=8.5 , $fs=0.1 );
-              translate ([40, 15, 0]) 
-                 cylinder  (h=3, r=8.5 , $fs=0.1 );
-              translate ([20, 5, 0]) 
-                 cube ([14, 21, 3]);
+            translate ([14, 15, -1]) 
+               cylinder  (h=5, r=16/2 , $fs=0.1 );
+              translate ([40, 15, -1]) 
+                 cylinder  (h=5, r=16/2 , $fs=0.1 );
+              translate ([20, 5, -1]) 
+                 cube ([14, 21, 5]);
               translate ([6, 23, 0]) 
                  cylinder  (h=3, r=1.2 , $fs=0.1 );
               translate ([47, 6, 0]) 
                  cylinder  (h=3, r=1.2 , $fs=0.1 );
         }
     }
-    translate([23.5, 50, 9])
+    translate([21.5, 50, 9])
         difference() {
             translate([0, -16, -4]) {
                 translate([2, 4.5, 0])

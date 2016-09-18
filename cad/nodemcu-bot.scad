@@ -12,9 +12,9 @@ edubot_tail="wheel";
 //edubot_tail="drag";
 
 // show(0);
-// print();
+print();
 // print_cover();
-print_mb();
+// print_mb();
 
 
 // motor_box1();
