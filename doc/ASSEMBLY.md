@@ -10,4 +10,4 @@ Animated Assembly of the bot:
 
 Fully assembled bot:
 
-![Assembled](nodemcu-bot_fully_assembled.gif)
+![Assembled](nodemcu-bot_fully_assembled.jpg)
